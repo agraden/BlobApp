@@ -3,10 +3,19 @@ using Azure.Storage.Blobs.Models;
 
 string connectionString = "";
 string containerName = "scripts1";
+string blobName = "scripts.sql";
+string filePath = "C:\\temp\\script.sql";
 
-BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
+// BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
+BlobContainerClient blobServiceClient = new BlobContainerClient(connectionString, containerName);
 
 // create container and specify access type
-await blobServiceClient.CreateBlobContainerAsync(containerName, PublicAccessType.Blob);
+// await blobServiceClient.CreateBlobContainerAsync(containerName, PublicAccessType.Blob);
 
-Console.WriteLine("Container created");
+
+// establish client to create blob
+BlobClient blobClient = blobServiceClient.GetBlobClient(blobName);
+
+await blobClient.UploadAsync(filePath, true);
+
+Console.WriteLine("Uploaded the blob");
